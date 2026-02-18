@@ -1,0 +1,43 @@
+Screens{
+    MainMenu,
+    CharacterCreation,
+    GameScreen
+}
+services -> TextureService -> String -> texture
+
+assets/{entities,items,hair,props,buildings}
+
+GameHandler -> {
+    WorldHandler,
+    EntityHandler,
+    ItemHandler,
+    AiHandler
+}
+
+Entity -> children classes {
+    Saiyan,
+    Human,
+    Namekian,
+    FrostDemon,
+    Majin,
+    Buu,
+    Androids,
+    Kais
+    }
+
+Item ->child classes{
+    Resource,
+    Equipement
+}
+
+Stats,CharArchetype,MartialArts{Skills}
+
+Generators{Entity,Stats,Items,World}
+
+Multiverse -> universe -> planet -> world;
+
+Factions
+
+Powerlevels LevelScaling
+
+Spaceships!!!
