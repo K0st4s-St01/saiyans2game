@@ -11,5 +11,5 @@ import lombok.Setter;
 public class MartialArt{
     private String name;
     private SkillStat progress;
-    private Skill[] skills = new Skill[7];
+    private Skill[] skills = new Skill[5];
 }

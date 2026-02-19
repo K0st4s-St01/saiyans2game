@@ -74,16 +74,20 @@ public class CharCreation implements Screen {
         stage.addActor(factionNameTextField);
         stage.addActor(previewEquipment);
 
-        stage.addActor(SaiyanButton.of(skin, "back", 160, 140, new ClickListener() {
+        stage.addActor(SaiyanButton.of(skin, "start game", 360, 140, new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 CharacterCreationData data = new CharacterCreationData();
                 data.setArchetype(charch.getSelected());
                 data.setCustom(cust.getSelected());
-                data.setFaction(factionNameTextField.getSelection());
-                data.setName(nameTextField.getSelection());
+                data.setFaction(factionNameTextField.getText());
+                data.setName(nameTextField.getText());
                 data.setRace(ent.getSelected());
                 System.out.println(data);
+                if(data.getName().isEmpty() || data.getFaction().isEmpty()){
+                    return;
+                }
+                main.startGame(data);
             }
         }));
 

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import lombok.Getter;
 
@@ -19,6 +20,8 @@ public final class TextureService {
     private static Map<String, Texture> buildings;
     @Getter
     private static Map<String, Texture> spaceships;
+    @Getter
+    private static Map<String,Sprite> animations;
 
     private static Map<String, Texture> load(File directory) {
         var result = new TreeMap<String, Texture>();
@@ -36,6 +39,11 @@ public final class TextureService {
         items = load(new File("items"));
         buildings = load(new File("buildings"));
         spaceships = load(new File("spaceships"));
+        var animationTextures = load(new File("animations"));
+        animations = new TreeMap<>();
+        for(String key : animationTextures.keySet()){
+            animations.put(key, new Sprite(animationTextures.get(key)));
+        }
     }
 
     private TextureService() {

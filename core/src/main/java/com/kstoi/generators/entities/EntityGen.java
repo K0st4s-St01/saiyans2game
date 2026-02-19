@@ -3,6 +3,7 @@ package com.kstoi.generators.entities;
 import java.util.Random;
 
 import com.kstoi.factions.Faction;
+import com.kstoi.generators.entities.sub.HumanGen;
 import com.kstoi.generators.entities.sub.SaiyanGen;
 import com.kstoi.generators.items.EquipmentGenerator;
 import com.kstoi.models.entities.Entity;
@@ -19,14 +20,14 @@ public class EntityGen{
 			// 	break;
 			// case FrostDemon:
 			// 	break;
-			// case Human:
-			// 	break;
+			case Human:
+			  return HumanGen.nextHuman(x, y, size, powerlevel, random, EquipmentGenerator.generateEquipment(role, faction.getArchetype()), faction.getName(),null/*martial art*/);
 			// case Majin:
 			// 	break;
 			// case Namekian:
 			// 	break;
 			case Saiyan:
-			    return SaiyanGen.nextSaiyan(x, y, size, powerlevel, random, EquipmentGenerator.generateEquipment(role, faction.getArchetype()), faction.getName(),;
+			    return SaiyanGen.nextSaiyan(x, y, size, powerlevel, random, EquipmentGenerator.generateEquipment(role, faction.getArchetype()), faction.getName(),null/*martial art*/);
 			default:
 			    throw new RuntimeException("unsupported race");
         }

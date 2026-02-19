@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.kstoi.martial_arts.MartialArt;
 import com.kstoi.martial_arts.Skill;
+import com.kstoi.martial_arts.Skill.SkillAnimation;
+import com.kstoi.martial_arts.skill_impl.base.Recharge;
 import com.kstoi.services.TextureService;
 import com.kstoi.stats.BaseStat;
 import com.kstoi.stats.CharacterArchetypes;
@@ -42,7 +44,7 @@ public abstract class Entity implements Serializable {
     private String factionName;
 
     private Equipment clothes;
-    private Skill[] baseSkills = new Skill[2]{}
+    private Skill[] baseSkills = new Skill[]{null,new Recharge()};
 
     public void render(SpriteBatch batch, BitmapFont font) {
         batch.draw(TextureService.getEntities().get(avatar), pos.x, pos.y, pos.width, pos.height);
@@ -55,6 +57,21 @@ public abstract class Entity implements Serializable {
         }
     }
 
+    public void move(float x,float y){
+        pos.x+=x;
+        pos.y+=y;
+    }
+    public SkillAnimation fireBaseSkill(int index,Entity target){
+        if(index<=baseSkills.length && baseSkills[index] != null){
+            var skill = baseSkills[index];
+            if(skill.isOnSelf()){
+                return skill.fireOnSelf(this, 0f);
+            }else if(target != null){
+                return skill.fireOnEntity(target, 0f);
+            }
+        }
+        throw new RuntimeException("skill not yet implemented");
+    }
     public void shape(ShapeRenderer renderer) {
         renderer.setColor(Color.BLACK);
         renderer.rect(pos.x, pos.y + 10, health.getMax(), 10);

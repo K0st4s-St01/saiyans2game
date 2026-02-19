@@ -2,6 +2,8 @@ package com.kstoi;
 
 import com.badlogic.gdx.Game;
 import com.kstoi.ui.screens.CharCreation;
+import com.kstoi.ui.screens.GameScreen;
+import com.kstoi.utils.CharacterCreationData;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
@@ -20,7 +22,7 @@ public class Main extends Game {
     public void loadGame(){
 
     }
-    public void startGame(){
-
+    public void startGame(CharacterCreationData data){
+        setScreen(new GameScreen(this,data));
     }
 }

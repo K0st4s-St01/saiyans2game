@@ -22,20 +22,24 @@ public abstract class Skill implements Serializable {
     private float requirement;
     private float kiCost;
     private boolean onSelf;
+    private float cooldown;
 
     public abstract SkillAnimation fireOnEntity(Entity target, float skillMultiplier);
     public abstract SkillAnimation fireOnSelf(Entity target, float skillMultiplier);
 
-    public abstract boolean ended();
-
     @AllArgsConstructor
+    @Setter
+    @Getter
     public static abstract class SkillAnimation {
         public Rectangle position;
+        private boolean active = false;
 
         public abstract void render(SpriteBatch batch);
 
         public abstract void shape(ShapeRenderer renderer);
 
         public abstract void update(float delta);
+        public abstract void stop();
+        public abstract boolean ended();
     }
 }
