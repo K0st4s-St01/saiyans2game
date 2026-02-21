@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.kstoi.martial_arts.MartialArt;
 import com.kstoi.martial_arts.Skill;
 import com.kstoi.martial_arts.Skill.SkillAnimation;
+import com.kstoi.martial_arts.skill_impl.base.Hit;
+import com.kstoi.martial_arts.skill_impl.base.KiBlast;
 import com.kstoi.martial_arts.skill_impl.base.Recharge;
 import com.kstoi.services.TextureService;
 import com.kstoi.stats.BaseStat;
@@ -44,7 +46,7 @@ public abstract class Entity implements Serializable {
     private String factionName;
 
     private Equipment clothes;
-    private Skill[] baseSkills = new Skill[]{null,new Recharge()};
+    private Skill[] baseSkills = new Skill[]{new Hit(this),new Recharge(),new KiBlast(this)};
 
     public void render(SpriteBatch batch, BitmapFont font) {
         batch.draw(TextureService.getEntities().get(avatar), pos.x, pos.y, pos.width, pos.height);
@@ -58,29 +60,30 @@ public abstract class Entity implements Serializable {
     }
 
     public void move(float x,float y){
-        pos.x+=x;
-        pos.y+=y;
+        this.pos.x+=x;
+        this.pos.y+=y;
     }
     public SkillAnimation fireBaseSkill(int index,Entity target){
         if(index<=baseSkills.length && baseSkills[index] != null){
             var skill = baseSkills[index];
             if(skill.isOnSelf()){
-                return skill.fireOnSelf(this, 0f);
+                return skill.fireOnSelf(this, 1f);
             }else if(target != null){
-                return skill.fireOnEntity(target, 0f);
+                return skill.fireOnEntity(target, 1f);
             }
         }
         throw new RuntimeException("skill not yet implemented");
     }
     public void shape(ShapeRenderer renderer) {
-        renderer.setColor(Color.BLACK);
-        renderer.rect(pos.x, pos.y + 10, health.getMax(), 10);
-        renderer.setColor(Color.GREEN);
-        renderer.rect(pos.x, pos.y + 10, health.getCurrent(), 10);
+        //TODO
+        // renderer.setColor(Color.BLACK);
+        // renderer.rect(pos.x, pos.y + 10, health.getMax(), 10);
+        // renderer.setColor(Color.GREEN);
+        // renderer.rect(pos.x, pos.y + 10, health.getCurrent(), 10);
 
-        renderer.setColor(Color.BLACK);
-        renderer.rect(pos.x, pos.y, ki.getMax(), 10);
-        renderer.setColor(Color.CYAN);
-        renderer.rect(pos.x, pos.y, ki.getCurrent(), 10);
+        // renderer.setColor(Color.BLACK);
+        // renderer.rect(pos.x, pos.y, ki.getMax(), 10);
+        // renderer.setColor(Color.CYAN);
+        // renderer.rect(pos.x, pos.y, ki.getCurrent(), 10);
     }
 }

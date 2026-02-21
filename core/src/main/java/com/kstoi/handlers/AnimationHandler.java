@@ -13,11 +13,16 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class AnimationHandler {
-  private Map<String, SkillAnimation> skills = new TreeMap<>();
+  private Map<String, List<SkillAnimation>> skills = new TreeMap<>();
 
   // sourceName for handling duplicate inputs
   public void addSkillAnimation(String sourceName, SkillAnimation animation) {
-    skills.put(sourceName, animation);
+    if(skills.containsKey(sourceName)){
+      skills.get(sourceName).add(animation);
+    }else{
+      skills.put(sourceName,new ArrayList<SkillAnimation>());
+      skills.get(sourceName).add(animation);
+    }
   }
 
   public void stopOnSelf(String sourceName) {
@@ -26,17 +31,17 @@ public class AnimationHandler {
   }
 
   public void render(SpriteBatch batch) {
-    for (SkillAnimation an : skills.values()) {
-      if (an != null && !an.ended()) {
-        an.render(batch);
+    for (var an : skills.values()) {
+      if (an != null) {
+        an.forEach(animation -> animation.render(batch));
       }
     }
   }
 
   public void shapes(ShapeRenderer shapeRenderer) {
-    for (SkillAnimation an : skills.values()) {
-      if (an != null && !an.ended()) {
-        an.shape(shapeRenderer);
+    for (var an : skills.values()) {
+      if (an != null) {
+        an.forEach(animation -> animation.shape(shapeRenderer));
       }
     }
   }
@@ -46,13 +51,15 @@ public class AnimationHandler {
 
     while (iterator.hasNext()) {
       var entry = iterator.next();
-      SkillAnimation animation = entry.getValue();
+      entry.getValue().removeIf(animation -> {
+        if (animation == null || animation.ended()) {
+          return true;
+        } else {
+          animation.update(delta);
+          return false;
+        }
+      });
 
-      if (animation == null || animation.ended()) {
-        iterator.remove();
-      } else {
-        animation.update(delta);
-      }
     }
   }
 

@@ -36,6 +36,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
+    gameHandler.update(delta);
 	  var cameraPosition = gameHandler.getPlayerHandler().updateCamera();
 	  camera.position.x=  cameraPosition.x;
 	  camera.position.y = cameraPosition.y;
@@ -53,6 +54,10 @@ public class GameScreen implements Screen{
 	  batch.begin();
 	  gameHandler.render(batch, font);
 	  batch.end();
+
+    renderer.begin(ShapeType.Filled);
+    gameHandler.animationShapes(renderer);
+    renderer.end();
 	}
 
 	@Override

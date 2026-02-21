@@ -8,7 +8,7 @@ public class EquipmentGenerator{
     }
     public static Equipment generateEquipment(EntityGen.Role role,Faction.FactionArchetype factionArchetype){
         Equipment result = new Equipment();
-        result.setTexture(factionArchetype.toString().toLowerCase()+"_"+role.toString().toLowerCase());
+        result.setTexture(factionArchetype.toString().toLowerCase()+"_"+role.toString().toLowerCase()+"_armor");
         return result;
     }
 }

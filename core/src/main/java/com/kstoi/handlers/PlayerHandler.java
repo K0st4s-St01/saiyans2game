@@ -7,47 +7,62 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.kstoi.martial_arts.Skill.SkillAnimation;
+import com.kstoi.models.entities.Entity;
 import com.kstoi.models.player.Player;
 import com.kstoi.utils.*;
+import com.sun.source.tree.CaseTree.CaseKind;
 
 import lombok.Getter;
 
 @Getter
 public class PlayerHandler implements InputProcessor {
 	private Player player;
-	private Vector2 movement = null;
-	private boolean moving = false;
+	private Vector2 movement = new Vector2();
 	private AnimationHandler animationHandler;
+	private final EntityHandler entityHandler;
 
-	public PlayerHandler(CharacterCreationData data, AnimationHandler animationHandler) {
+	public PlayerHandler(CharacterCreationData data, AnimationHandler animationHandler, EntityHandler entityHandler) {
 		player = CreatePlayer.of(data);
 		this.animationHandler = animationHandler;
+		this.entityHandler = entityHandler;
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		movement = new Vector2();
+		SkillAnimation animation = null;
+		Entity target = entityHandler.closestTarget(player.entity.pos);
 		switch (keycode) {
 			case Keys.A:
-				moving = true;
-				movement.x = 100f;
+				movement.x = -300f;
 				break;
 			case Keys.D:
-				moving = true;
-				movement.x = -100f;
+				movement.x = 300f;
 				break;
 			case Keys.W:
-				moving = true;
-				movement.y = 100f;
+				movement.y = 300f;
 				break;
 			case Keys.S:
-				moving = true;
-				movement.y = -100f;
+				movement.y = -300f;
 				break;
 			case Keys.SPACE:
-				var animation = player.entity.fireBaseSkill(1, null);
+				animation = player.entity.fireBaseSkill(1, null);
 				animation.setActive(true);
 				animationHandler.addSkillAnimation(player.entity.getName(), animation);
+				break;
+			case Keys.Z:
+				if (target != null) {
+					animation = player.entity.fireBaseSkill(0, target);
+					animation.setActive(true);
+					animationHandler.addSkillAnimation(player.entity.getName(), animation);
+				}
+				break;
+			case Keys.X:
+				if (target != null) {
+					animation = player.entity.fireBaseSkill(2, target);
+					animation.setActive(true);
+					animationHandler.addSkillAnimation(player.entity.getName() + "kiBlast", animation);
+				}
 				break;
 			default:
 				return true;
@@ -61,8 +76,17 @@ public class PlayerHandler implements InputProcessor {
 			case Keys.SPACE:
 				animationHandler.stopOnSelf(player.entity.getName());
 				break;
-			case Keys.A, Keys.D, Keys.W, Keys.S:
-				moving = false;
+			case Keys.A:
+				this.movement.x = 0;
+				break;
+			case Keys.D:
+				this.movement.x = 0;
+				break;
+			case Keys.W:
+				this.movement.y = 0;
+				break;
+			case Keys.S:
+				this.movement.y = 0;
 				break;
 			default:
 				return true;
@@ -72,7 +96,6 @@ public class PlayerHandler implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-
 		return true;
 	}
 
@@ -115,8 +138,7 @@ public class PlayerHandler implements InputProcessor {
 	}
 
 	public void update(float delta) {
-		if (moving)
-			player.entity.move(movement.x * delta, movement.y * delta);
+		player.entity.move(movement.x * delta, movement.y * delta);
 
 	}
 

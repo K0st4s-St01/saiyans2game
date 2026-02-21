@@ -221,7 +221,8 @@ public class StatsGen{
         return skills;
     }
     public static BaseStat genBaseStat(float magnitude){
-        BaseStat stat = new BaseStat((float) (100+Math.log(10*magnitude)), 1f, 100+10*magnitude);
+    	
+        BaseStat stat = new BaseStat((float) (100+100*magnitude), 0f, 100+100*magnitude);
         return stat;
     }
 }
